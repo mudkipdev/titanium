@@ -9,12 +9,12 @@ from discord import Color, app_commands
 from discord.ext import commands
 from PIL import Image, ImageEnhance, ImageOps
 
+from main import TitaniumBot
 
-# noinspection PyTypeChecker
+
 class Images(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: TitaniumBot) -> None:
         self.bot = bot
-        self.bot: commands.Bot
 
         # Convert to GIF option
         self.img_gif_ctx = app_commands.ContextMenu(
@@ -73,12 +73,15 @@ class Images(commands.Cog):
         self,
         interaction: discord.Interaction,
         file: discord.Attachment,
-        scale: float = None,
-        target_x: int = None,
-        target_y: int = None,
+        scale: float | None = None,
+        target_x: int | None = None,
+        target_y: int | None = None,
         ephemeral: bool = False,
     ):
         await interaction.response.defer(ephemeral=ephemeral)
+
+        if file.content_type is None:
+            return # TODO
 
         if (
             file.content_type.split("/")[0] == "image"
@@ -605,5 +608,5 @@ class Images(commands.Cog):
                 os.remove(os.path.join("tmp", file.filename))
 
 
-async def setup(bot):
+async def setup(bot: TitaniumBot) -> None:
     await bot.add_cog(Images(bot))

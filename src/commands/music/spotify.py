@@ -1,7 +1,4 @@
 import logging
-import os
-import random
-import string
 
 import aiohttp
 import discord
@@ -14,7 +11,6 @@ from discord.ui import Select, View
 from spotipy.oauth2 import SpotifyClientCredentials
 
 import utils.spotify_elements as elements
-from utils.escape_markdown import escape_markdown as escape
 
 
 class Spotify(commands.Cog):
@@ -233,9 +229,9 @@ class Spotify(commands.Cog):
                     artist_string = ""
                     for artist in item["artists"]:
                         if artist_string == "":
-                            artist_string = await escape(artist["name"])
+                            artist_string = discord.utils.escape_markdown(artist["name"])
                         else:
-                            artist_string += f", {await escape(artist['name'])}"
+                            artist_string += f", {discord.utils.escape_markdown(artist['name'])}"
 
                     if len(item["name"]) > 100:
                         title = item["name"][:97] + "..."

@@ -5,19 +5,17 @@ import os
 import traceback
 
 import discord
-import discord.ext
-import discord.ext.commands
 from discord import ButtonStyle, Color, app_commands
 from discord.ext import commands
 from discord.ui import View
 
+from main import TitaniumBot
 import utils.return_ctrlguild as ctrl
 
 
 class CogUtils(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: TitaniumBot) -> None:
         self.bot = bot
-        self.bot: discord.ext.commands.Bot
 
     context = discord.app_commands.AppCommandContext(
         guild=True, dm_channel=True, private_channel=False
@@ -347,5 +345,5 @@ class CogUtils(commands.Cog):
         await interaction.followup.send("Done.", ephemeral=True)
 
 
-async def setup(bot):
+async def setup(bot: TitaniumBot):
     await bot.add_cog(CogUtils(bot))

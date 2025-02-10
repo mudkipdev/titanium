@@ -14,7 +14,7 @@ from glob import glob
 import aiohttp
 import asqlite
 import discord
-from discord import Color
+from discord import Color, WebhookMessage
 from discord.ext import commands
 
 # Current Running Path
@@ -108,14 +108,10 @@ def read_config_file(path) -> tuple[dict, dict]:
 
 
 # Bot Setup
-intents = discord.Intents.default()
-intents.message_content = True
-intents.members = True
-intents.presences = True
-
+intents = discord.Intents.all()
 
 class TitaniumBot(commands.Bot):
-    async def setup_hook(self):
+    async def setup_hook(self) -> None:
         logging.info("[INIT] Reading config files.")
 
         # Read config files
@@ -344,11 +340,11 @@ async def on_app_command_error(
         await interaction.response.defer(ephemeral=True)
 
         embed = discord.Embed(title="Cooldown", description=error, color=Color.red())
-        msg = await interaction.followup.send(embed=embed)
+        msg: WebhookMessage | None = await interaction.followup.send(embed=embed)
 
-        await asyncio.sleep(5)
-
-        await msg.delete()
+        if isinstance(msg, WebhookMessage):
+            await asyncio.sleep(5)
+            await msg.delete()
     # Missing Perms
     elif isinstance(error, discord.app_commands.errors.MissingPermissions):
         await interaction.response.defer(ephemeral=True)

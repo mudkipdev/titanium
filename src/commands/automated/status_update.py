@@ -1,3 +1,6 @@
+from typing import override
+from main import TitaniumBot
+
 import logging
 import traceback
 
@@ -6,11 +9,12 @@ from discord.ext import commands, tasks
 
 
 class StatusUpdate(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: TitaniumBot) -> None:
         self.bot = bot
         self.status_update.start()
 
-    def cog_unload(self):
+    @override
+    async def cog_unload(self) -> None:
         self.status_update.cancel()
 
     # Uptime Kuma Ping
@@ -20,7 +24,7 @@ class StatusUpdate(commands.Cog):
 
         try:
             # Count members
-            members = sum(guild.member_count for guild in self.bot.guilds)
+            members: int = sum(guild.member_count for guild in self.bot.guilds)
 
             # Update status
             await self.bot.change_presence(
@@ -35,5 +39,5 @@ class StatusUpdate(commands.Cog):
             )
 
 
-async def setup(bot):
+async def setup(bot: TitaniumBot) -> None:
     await bot.add_cog(StatusUpdate(bot))

@@ -13,11 +13,12 @@ from discord.ext import commands
 from discord.ui import View
 from spotipy.oauth2 import SpotifyClientCredentials
 
+from main import TitaniumBot
 import utils.spotify_elements as elements
 
 
 class NowPlaying(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: TitaniumBot) -> None:
         self.bot = bot
 
         # Only load if Spotify API key is present
@@ -41,7 +42,7 @@ class NowPlaying(commands.Cog):
         user="Optional: the user to show the activity of. If not provided, it will show your own activity."
     )
     async def now_playing(
-        self, interaction: discord.Interaction, user: discord.User = None
+        self, interaction: discord.Interaction, user: discord.User | discord.Member | None = None
     ):
         if user is None:
             user_set = False
@@ -50,7 +51,7 @@ class NowPlaying(commands.Cog):
             user_set = True
 
         # Check if Titanium is in a mutual guild with the user
-        if user.mutual_guilds is None or len(user.mutual_guilds) == 0:
+        if not user.mutual_guilds:
             # Send error message - no mutual guilds
             await interaction.response.defer(ephemeral=True)
             embed = discord.Embed(
@@ -215,5 +216,5 @@ class NowPlaying(commands.Cog):
                 await interaction.edit_original_response(embed=embed)
 
 
-async def setup(bot):
+async def setup(bot: TitaniumBot) -> None:
     await bot.add_cog(NowPlaying(bot))

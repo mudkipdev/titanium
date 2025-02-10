@@ -7,9 +7,11 @@ from discord import ButtonStyle, Color, app_commands
 from discord.ext import commands
 from discord.ui import View
 
+from main import TitaniumBot
+
 
 class Leaderboard(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: TitaniumBot) -> None:
         self.bot = bot
         self.lb_pool: asqlite.Pool = bot.lb_pool
         self.bot.loop.create_task(self.sql_setup())
@@ -721,5 +723,5 @@ class Leaderboard(commands.Cog):
                 await interaction.edit_original_response(embed=embed, view=view)
 
 
-async def setup(bot):
+async def setup(bot: TitaniumBot) -> None:
     await bot.add_cog(Leaderboard(bot))

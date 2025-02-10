@@ -6,10 +6,12 @@ from discord import ButtonStyle, Color, app_commands
 from discord.ext import commands
 from discord.ui import View
 
+from main import TitaniumBot
+
 
 class EditHistory(commands.Cog):
-    def __init__(self, bot):
-        self.bot: commands.Bot = bot
+    def __init__(self, bot: TitaniumBot) -> None:
+        self.bot = bot
         self.edit_pool: asqlite.Pool = bot.edit_pool
         self.enabled_servers = []
 

@@ -4,14 +4,16 @@ import discord
 from discord import Color
 from discord.ext import commands
 
+from main import TitaniumBot
+
 
 class ViewTimeout(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: TitaniumBot) -> None:
         self.bot = bot
 
     # Listen for Interaction
     @commands.Cog.listener()
-    async def on_interaction(self, interaction: discord.Interaction):
+    async def on_interaction(self, interaction: discord.Interaction) -> None:
         # Wait a second to give a chance to other commands
         await asyncio.sleep(1)
 
@@ -27,11 +29,12 @@ class ViewTimeout(commands.Cog):
             view = discord.ui.View.from_message(response)
 
             for item in view.children:
-                try:
-                    if item.style != discord.ButtonStyle.url:
+                if isinstance(item, discord.ui.Button):
+                    try:
+                        if item.style != discord.ButtonStyle.url:
+                            item.disabled = True
+                    except Exception:
                         item.disabled = True
-                except Exception:
-                    item.disabled = True
 
             # Edit the message
             await response.edit(view=view)
@@ -55,5 +58,5 @@ class ViewTimeout(commands.Cog):
             await interaction.followup.send(embed=embed, ephemeral=True)
 
 
-async def setup(bot):
+async def setup(bot: TitaniumBot) -> None:
     await bot.add_cog(ViewTimeout(bot))

@@ -11,9 +11,11 @@ from discord import Color, app_commands
 from discord.ext import commands
 from discord.ui import View
 
+from main import TitaniumBot
+
 
 class BotUtils(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: TitaniumBot) -> None:
         self.bot = bot
 
     context = discord.app_commands.AppCommandContext(
@@ -206,5 +208,5 @@ class BotUtils(commands.Cog):
         await interaction.edit_original_response(embed=embed)
 
 
-async def setup(bot):
+async def setup(bot: TitaniumBot) -> None:
     await bot.add_cog(BotUtils(bot))

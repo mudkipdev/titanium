@@ -4,9 +4,11 @@ from discord import ButtonStyle, Color, app_commands
 from discord.ext import commands
 from discord.ui import View
 
+from main import TitaniumBot
+
 
 class Reviews(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: TitaniumBot) -> None:
         self.bot = bot
 
     context = discord.app_commands.AppCommandContext(
@@ -962,5 +964,5 @@ class Reviews(commands.Cog):
                 await interaction.followup.send(embed=embed, ephemeral=ephemeral)
 
 
-async def setup(bot):
+async def setup(bot: TitaniumBot) -> None:
     await bot.add_cog(Reviews(bot))

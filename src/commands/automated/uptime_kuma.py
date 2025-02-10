@@ -1,3 +1,6 @@
+from typing import override
+from main import TitaniumBot
+
 import logging
 import traceback
 
@@ -6,11 +9,11 @@ from discord.ext import commands, tasks
 
 
 class UptimeKuma(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: TitaniumBot) -> None:
         self.bot = bot
 
         try:
-            self.uptime_kuma_server = bot.options["uptime-kuma-push"]
+            self.uptime_kuma_server: str | None = bot.options["uptime-kuma-push"]
 
             if self.uptime_kuma_server is not None and self.uptime_kuma_server != "":
                 logging.info(
@@ -28,7 +31,8 @@ class UptimeKuma(commands.Cog):
             )
             self.uptime_kuma_server = None
 
-    def cog_unload(self):
+    @override
+    async def cog_unload(self) -> None:
         if self.uptime_kuma_server is not None:
             self.kuma_ping.cancel()
 
@@ -81,5 +85,5 @@ class UptimeKuma(commands.Cog):
             return
 
 
-async def setup(bot):
+async def setup(bot: TitaniumBot) -> None:
     await bot.add_cog(UptimeKuma(bot))

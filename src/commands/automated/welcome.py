@@ -3,15 +3,18 @@ from discord import Color
 from discord.ext import commands
 from discord.ui import View
 
+from main import TitaniumBot
+
 
 class Welcome(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: TitaniumBot) -> None:
         self.bot = bot
 
     # Status Update
     @commands.Cog.listener()
-    async def on_guild_join(self, guild: discord.Guild):
-        self.bot: commands.Bot
+    async def on_guild_join(self, guild: discord.Guild) -> None:
+        if self.bot.user is None or self.bot.user.display_avatar is None:
+            return # TODO
 
         try:
             embed = discord.Embed(
@@ -83,5 +86,5 @@ class Welcome(commands.Cog):
             pass
 
 
-async def setup(bot):
+async def setup(bot: TitaniumBot) -> None:
     await bot.add_cog(Welcome(bot))

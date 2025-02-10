@@ -9,9 +9,11 @@ import discord
 from discord import Color, app_commands
 from discord.ext import commands
 
+from main import TitaniumBot
+
 
 class Videos(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: TitaniumBot) -> None:
         self.bot = bot
 
     context = discord.app_commands.AppCommandContext(
@@ -32,8 +34,11 @@ class Videos(commands.Cog):
     @app_commands.checks.cooldown(1, 30)
     async def video_to_gif(
         self, interaction: discord.Interaction, file: discord.Attachment
-    ):
+    ) -> None:
         await interaction.response.defer()
+
+        if file.content_type is None:
+            return # TODO: add error message
 
         if file.content_type.split("/")[0] == "video":  # Check if file is a video
             if file.size < 20000000:  # 20MB file limit
@@ -64,7 +69,6 @@ class Videos(commands.Cog):
 
                 try:
                     # Save file to /tmp
-                    # noinspection PyTypeChecker
                     await file.save(
                         os.path.join(
                             "tmp", f"{filename}.{file.content_type.split('/')[-1]}"
@@ -111,7 +115,7 @@ class Videos(commands.Cog):
                     )
 
                     # Wait for ffmpeg to finish
-                    stdout, stderr = await proc.communicate()
+                    _, stderr = await proc.communicate()
 
                     if proc.returncode == 0:
                         # Send resized image
@@ -184,5 +188,5 @@ class Videos(commands.Cog):
             await interaction.followup.send(embed=embed)
 
 
-async def setup(bot):
+async def setup(bot: TitaniumBot) -> None:
     await bot.add_cog(Videos(bot))

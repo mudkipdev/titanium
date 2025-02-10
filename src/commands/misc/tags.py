@@ -5,9 +5,11 @@ from discord.ext import commands
 from discord.ui import View
 from thefuzz import process
 
+from main import TitaniumBot
+
 
 class Tags(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: TitaniumBot) -> None:
         self.bot = bot
         self.tags_pool: asqlite.Pool = bot.tags_pool
         self.tags: dict = {}
@@ -302,8 +304,8 @@ class Tags(commands.Cog):
         self,
         interaction: discord.Interaction,
         name: str,
-        content: str = None,
-        attachment: discord.Attachment = None,
+        content: str | None = None,
+        attachment: discord.Attachment | None = None,
     ):
         await interaction.response.defer(ephemeral=True)
 
@@ -373,9 +375,9 @@ class Tags(commands.Cog):
         self,
         interaction: discord.Interaction,
         tag: str,
-        name: str = None,
-        content: str = None,
-        attachment: discord.Attachment = None,
+        name: str | None = None,
+        content: str | None = None,
+        attachment: discord.Attachment | None = None,
     ):
         await interaction.response.defer(ephemeral=True)
 

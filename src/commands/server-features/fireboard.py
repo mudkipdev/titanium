@@ -4,15 +4,15 @@ import asyncio
 
 import asqlite
 import discord
-import discord.ext
-import discord.ext.commands
 from discord import Color, app_commands
 from discord.ext import commands
 from discord.ui import View
 
+from main import TitaniumBot
+
 
 class Fireboard(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: TitaniumBot) -> None:
         self.bot = bot
         self.fireboard_pool: asqlite.Pool = bot.fireboard_pool
         self.locked_messages = []
@@ -84,8 +84,6 @@ class Fireboard(commands.Cog):
     # Listen for reactions
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload: discord.RawReactionActionEvent):
-        self.bot: discord.ext.commands.Bot
-
         # Stop if this is a DM
         if payload.guild_id == None:
             return
@@ -306,8 +304,6 @@ class Fireboard(commands.Cog):
     # Listen for reaction removal
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload: discord.RawReactionActionEvent):
-        self.bot: discord.ext.commands.Bot
-
         queued = False
 
         # Stop if this is a DM
@@ -549,8 +545,6 @@ class Fireboard(commands.Cog):
     # Listen for message reaction clear
     @commands.Cog.listener()
     async def on_raw_reaction_clear(self, payload: discord.RawReactionClearEvent):
-        self.bot: discord.ext.commands.Bot
-
         queued = False
 
         # Stop if this is a DM
@@ -651,8 +645,6 @@ class Fireboard(commands.Cog):
     async def on_raw_reaction_clear_emoji(
         self, payload: discord.RawReactionClearEmojiEvent
     ):
-        self.bot: discord.ext.commands.Bot
-
         queued = False
 
         # Stop if this is a DM
@@ -749,8 +741,6 @@ class Fireboard(commands.Cog):
     # Listen for message being deleted
     @commands.Cog.listener()
     async def on_raw_message_delete(self, payload: discord.RawMessageDeleteEvent):
-        self.bot: discord.ext.commands.Bot
-
         queued = False
 
         # Stop if this is a DM
@@ -844,8 +834,6 @@ class Fireboard(commands.Cog):
     # Listen for message being edited
     @commands.Cog.listener()
     async def on_raw_message_edit(self, payload: discord.RawMessageUpdateEvent):
-        self.bot: discord.ext.commands.Bot
-
         queued = False
 
         # Stop if this is a DM
@@ -1656,5 +1644,5 @@ class Fireboard(commands.Cog):
             await interaction.followup.send(embed=embed, ephemeral=True)
 
 
-async def setup(bot):
+async def setup(bot: TitaniumBot) -> None:
     await bot.add_cog(Fireboard(bot))
