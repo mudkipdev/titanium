@@ -19,3 +19,8 @@ dependencies = [
     "url-cleaner>=0.1.5",
     "wikipedia>=1.4.0",
 ]
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+]
